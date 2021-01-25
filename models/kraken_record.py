@@ -4,6 +4,25 @@ from models.kraken_attribute import Kraken_attribute
 
 
 class Kraken_record:
+    '''
+
+    Main api:
+    - set: loads schema/json type record
+    - get: retrieves dict from record
+    - set_attr: set a specific Attribute
+    - get_attr: retrieves a specific attribute as attribute class
+    - get_attr_record: retrieves a specific attribute as dict 
+    - get_attr_best: retrieves best value from attribute (instead of the list)
+    - load: load data from source (database for example)
+    - dump: dump data to source (database for example)
+
+    Properties:
+    - ref_id: returns type/id combination
+    - datamap: returns dict of official keys and synonyms
+
+
+    '''
+
 
 
     def __init__(self):
@@ -13,13 +32,9 @@ class Kraken_record:
 
         self.input_value = None
 
-
         self.attributes = {}
 
         self.sub_records = []
-
-
-        a=1
 
 
 
@@ -32,6 +47,43 @@ class Kraken_record:
     def __str__(self):
 
         return str(self.get())
+
+
+    def __lt__(self, other):
+        
+        # Error handling
+        if not isinstance(other, Kraken_record):
+            return False
+        
+        # Compare if less or equal
+        if not self <= other:
+            return False
+
+        # Compare if equal
+        if self != other:
+            return True
+
+        return False
+
+
+    def __le__(self, other):
+
+        # Error handling
+        if not isinstance(other, Kraken_record):
+            return False
+
+        # Compare attributes
+        for i in self.attributes:
+            value_self = self.get_attr_record(i)
+            value_other = other.get_attr_record(i)
+
+            for v in value_self:
+                if v not in value_other:
+                    print('1')
+                    return False
+
+        return True
+
 
 
     def __eq__(self, other):
@@ -49,10 +101,6 @@ class Kraken_record:
                 return False
 
 
-        # Compare sub sub_records
-        if self.sub_records != other.sub_records:
-            return False
-
         # Assume equal 
         return True
 
@@ -62,7 +110,6 @@ class Kraken_record:
         # Error handling
         if not isinstance(other, Kraken_record):
             return self
-
 
         # Initialize new record
         new_kraken_record = Kraken_record()
@@ -152,6 +199,42 @@ class Kraken_record:
 
         return
 
+
+    def load(self, record):
+
+        # error handling
+        if not isinstance(record, dict):
+            return
+
+        # Assign metadata
+        if record.get('kraken:record_type', None):
+            self.record_type = record.get('kraken:record_type', None)
+
+        if record.get('kraken:record_id', None):
+            self.record_id = record.get('kraken:record_id', None)        
+
+        # Assign values
+        for i in record:
+            if i in ['kraken:record_type', 'kraken:record_id']:
+                continue
+
+            value = record.get(i, None)
+            self.set_attr(i, value)
+
+        return
+
+
+    def dump(self):
+
+        record = {}
+
+        record['kraken:record_type'] = self.record_type
+        record['kraken:record_id'] = self.record_id
+        
+        for i in self.attributes:
+            record[i] = self.get_attr_record(i)
+
+        return record
 
 
 
