@@ -26,6 +26,7 @@ class Test_kraken_record:
         self.test_less_or_equal_true()
         self.test_load()
         self.test_dump()
+        self.test_get_simple()
 
     def test_clean_input_value_blank(self):
         print('-')
@@ -743,7 +744,7 @@ class Test_kraken_record:
         print(inspect.currentframe().f_code.co_name)
         
         # Scenario values:        
-        
+
         test_value = {'@type': 'schema:test', '@id': 'test123', 'schema:name': [{'value': 'test_name', 'credibility': 50}], 'schema:test': [{'value': 'test_var', 'credibility': 50}]}
 
 
@@ -767,3 +768,41 @@ class Test_kraken_record:
 
 
         return
+
+
+    def test_get_simple(self):
+        print('-')
+        print(inspect.currentframe().f_code.co_name)
+        
+        # Scenario values:        
+       
+
+        test_value = {
+            'record_Type': 'schema:test', 
+            'RECORD_ID': 'test123', 
+            'credibility': 50,
+            'schema:name': 'test_name',
+            'schema:test': 'test_var'
+            }
+
+
+        expected_result = {'@type': 'schema:test', '@id': 'test123', 'schema:name': 'test_name', 'schema:test': 'test_var'}
+
+        # Test conditions
+        kr = Kraken_record()
+        kr.set(test_value)
+        
+        actual_result = kr.get_simple()
+
+        # Test evaluation
+        if actual_result == expected_result:
+            print('passed')
+        else:
+            print('failed')
+            print('Input value', '')
+            print('Expected result', expected_result)
+            print('actual_result', actual_result)
+
+
+        return
+    

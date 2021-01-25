@@ -148,6 +148,28 @@ class Kraken_record:
         return record
 
 
+    def get_simple(self):
+
+        record = {}
+        record['@type'] = self.record_type
+        record['@id'] = self.record_id
+
+        for i in self.attributes:
+            attrs = self.get_attr(i)
+            
+            record[i] = []
+            for p in attrs:
+                value = p.value
+                if value not in record[i]:
+                    record[i].append(value)
+            
+            if len(record[i]) == 1 :
+                record[i] = record[i][0]
+
+
+        return record
+
+
     def set(self, value):
 
 
