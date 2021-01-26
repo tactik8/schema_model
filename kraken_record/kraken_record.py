@@ -25,6 +25,8 @@ class Kraken_record:
 
 
 
+
+
     def __init__(self):
 
         self.record_type = None
