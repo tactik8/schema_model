@@ -26,9 +26,5 @@ setup(
     packages=["kraken"],
     include_package_data=True,
     install_requires=[],
-    entry_points={
-        "console_scripts": [
-            "kraken_record=kraken_record.__main__:main",
-        ]
-    },
+    
 )
