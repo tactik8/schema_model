@@ -23,7 +23,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=["kraken"],
+    packages=["kraken_record"],
     include_package_data=True,
     install_requires=[],
     
