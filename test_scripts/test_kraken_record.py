@@ -19,6 +19,7 @@ class Test_kraken_record:
         self.test_set_no_id()
         self.test_set_subschema()
         self.test_set_subschema2()
+        self.test_set_subschema3()
         self.test_add_different_values()
         self.test_add_same_values()
         self.test_equal_true()
@@ -451,6 +452,61 @@ class Test_kraken_record:
 
 
         return
+
+
+    def test_set_subschema3(self):
+        print('-')
+        print(inspect.currentframe().f_code.co_name)
+
+        
+        # Scenario values:        
+       
+
+        test_value_1 = {
+            'record_Type': 'schema:test', 
+            'RECORD_ID': 'test123', 
+            'credibility': 50,
+            'schema:name': 'test_name',
+            'schema:test': 'test_var',
+            'schema:sub_schema': {
+                '@type': 'schema:sub1',
+                '@id': 'sub_id',
+                'schema:sub_var': 'testsubvar',
+                'schema:sub2': {
+                    '@type': 'schema:sub2',
+                    '@id': 'testsub2',
+                    'schema:name': 'testsub2'
+                }
+                }
+            }
+
+
+        expected_result = [
+            {'@type': 'schema:sub1', '@id': 'sub_id', 'schema:sub_var': [{'value': 'testsubvar'}], 'schema:sub2': [{'value': {'@type': 'schema:sub2', '@id': 'testsub2'}}]}, 
+            {'@type': 'schema:sub2', '@id': 'testsub2', 'schem:name': [{'value': 'testsub2'}]}
+            ]
+
+
+
+        # Test conditions
+        kr = Kraken_record()
+        kr.set(test_value_1)
+
+        actual_result = kr.sub_records
+
+
+        # Test evaluation
+        if actual_result == expected_result:
+            print('passed')
+        else:
+            print('failed')
+            print('Input value', '')
+            print('Expected result', expected_result)
+            print('actual_result', actual_result)
+
+
+        return
+
 
 
      
