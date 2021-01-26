@@ -1,6 +1,6 @@
 
 
-from models.kraken_attribute import Kraken_attribute
+from kraken_record.kraken_attribute import Kraken_attribute
 
 
 class Kraken_record:

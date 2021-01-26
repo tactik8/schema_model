@@ -1,4 +1,4 @@
-from models.kraken_record import Kraken_record
+from kraken_record.kraken_record import Kraken_record
 import inspect
 
 class Test_kraken_record:
