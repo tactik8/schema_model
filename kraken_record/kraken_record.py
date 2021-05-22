@@ -7,12 +7,18 @@ class Kraken_record:
     '''
 
     Main api:
+    JSON to kraken schema
     - set: loads schema/json type record
     - get: retrieves dict from record
+    - sub_records: list of flattened sub records
+
+    Modifying kraken_schema record
     - set_attr: set a specific Attribute
     - get_attr: retrieves a specific attribute as attribute class
     - get_attr_record: retrieves a specific attribute as dict 
     - get_attr_best: retrieves best value from attribute (instead of the list)
+    
+    Importing exporting kraken_schema record (db for example)
     - load: load data from source (database for example)
     - dump: dump data to source (database for example)
 
@@ -173,7 +179,8 @@ class Kraken_record:
 
 
     def set(self, value):
-
+        """ Assign value from standard schema to record
+        """
 
         # Error handling     
         if not value:
